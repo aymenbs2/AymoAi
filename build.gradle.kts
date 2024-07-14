@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.aymenDev"
-version = "1.1"
+version = "v1.1.3"
 
 repositories {
     mavenCentral()
