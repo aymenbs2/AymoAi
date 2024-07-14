@@ -1,7 +1,9 @@
 name: Build and Publish Plugin
 
-on: [ push ]
-
+on:
+  push:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
