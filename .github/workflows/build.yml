@@ -64,12 +64,11 @@ jobs:
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git --tags
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git HEAD:main
 
-          - name: Build with Gradle
-          run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew build
 
-          - name: Sign Plugin
-          env:
-            AYMOAI_PASS: ${{ secrets.AYMOAI_PASS }}
-            AYMOAI_TOCKEN: ${{ secrets.AYMOAI_TOCKEN }}
-          
-          run: ./gradlew signPlugin publishPlugin
+      - name: Sign Plugin
+        env:
+          AYMOAI_PASS: ${{ secrets.AYMOAI_PASS }}
+          AYMOAI_TOCKEN: ${{ secrets.AYMOAI_TOCKEN }}
+        run: ./gradlew signPlugin publishPlugin
