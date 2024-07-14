@@ -60,7 +60,7 @@ jobs:
           git commit -m "Bump version to $NEW_VERSION"
           git tag $NEW_VERSION
           git push origin --tags 
-          git push origin main 
+          git push origin
 
       - name: Build with Gradle
         run: ./gradlew build
