@@ -1,0 +1,59 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.aymendev.aymoai</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>AymoAi</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="aymenbs.contact@gmail.com" url="https://www.linkedin.com/in/aymen-ben-salah-b60b5a153/">AymenDev
+    </vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
+   This plugin is a powerful and versatile set of tools designed to enhance the development experience for software engineers. With its extensive collection of features, developers can increase their productivity and simplify complex operations like Refactoring code with best way and generate unit test for exist code.
+    <em>Developed by Aymen Bensalah</em>
+    ]]></description>
+    <change-notes><![CDATA[
+        <ul>
+            <li>Initial release.</li>
+            <li>Support all programing language.</li>
+            <li>Improved performance.</li>
+
+        </ul>
+    ]]></change-notes>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add any necessary extensions here -->
+    </extensions>
+
+    <actions>
+
+        <action id="com.aymendev.aymoai.actions.CreateUnitTestAction"
+                class="com.aymendev.aymoai.actions.CreateUnitTestAction" text="Generate Unit Test With AymoAi"
+                description="Generate Unit Test With AymoAi">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+
+        </action>
+        <action id="com.aymendev.aymoai.actions.RefactCodeAction" class="com.aymendev.aymoai.actions.RefactCodeAction"
+                text="Refact The Code AymoAi"
+                description="Refactor The Code using AymoAi"
+        >
+
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>

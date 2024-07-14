@@ -1,0 +1,73 @@
+name: Build and Publish Plugin
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Kotlin
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Set environment variables
+        run: |
+          echo "AYMOAPI_KEY=${{ secrets.AYMOAPI_KEY }}" >> $GITHUB_ENV
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "HELPFUL_ASSISTANT=${{ secrets.HELPFUL_ASSISTANT }}" >> $GITHUB_ENV
+          echo "REFACTOR_CODE_RQ=${{ secrets.REFACTOR_CODE_RQ }}" >> $GITHUB_ENV
+          echo "MODEL=${{ secrets.MODEL }}" >> $GITHUB_ENV
+          echo "GENERATE_UNIT_TEST_RQ=${{ secrets.GENERATE_UNIT_TEST_RQ }}" >> $GITHUB_ENV
+
+      - name: Download certificate chain file
+        run: echo "${{ secrets.AYMOAI_CHAIN }}" > $GITHUB_WORKSPACE/certificate_chain.pem
+
+
+
+      - name: Download private key file
+        run: echo "${{ secrets.AYMOAI_CERTIF }}" > $GITHUB_WORKSPACE/private_key.pem
+
+      - name: Make version increment script executable
+        run: chmod +x ./increment_version.sh
+      - name: Increment version
+        id: increment_version
+        run: |
+          new_version=$(./increment_version.sh)
+          echo "NEW_VERSION=$new_version" >> $GITHUB_ENV
+
+      - name: Update version in build.gradle.kts
+        run: |
+          sed -i "s/version = \".*\"/version = \"$NEW_VERSION\"/" build.gradle.kts
+
+      - name: Commit version bump
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add build.gradle.kts
+          git commit -m "Bump version to $NEW_VERSION"
+          git tag $NEW_VERSION
+          git push origin --tags
+          git push
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Sign Plugin
+        env:
+          AYMOAI_PASS: ${{ secrets.AYMOAI_PASS }}
+          AYMOAI_TOCKEN: ${{ secrets.AYMOAI_TOCKEN }}
+
+        run: ./gradlew signPlugin publishPlugin
