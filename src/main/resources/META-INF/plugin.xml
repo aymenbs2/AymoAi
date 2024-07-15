@@ -49,8 +49,8 @@
         </action>
         <action id="com.aymendev.aymoai.actions.RefactCodeAction"
                 class="com.aymendev.aymoai.actions.RefactCodeAction"
-                text="Refact The Code AymoAi"
-                description="Refactor The Code using AymoAi"
+                text="Refactor The File using AymoAi"
+                description="Refactor The File using AymoAi"
                 icon="/icons/refactor_code.png"
         >
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
@@ -58,7 +58,8 @@
         </action>
         <action id="com.aymendev.aymoai.actions.RefactorSelectionAction"
                 class="com.aymendev.aymoai.actions.RefactorSelectionAction"
-                text="Refactor Selection using AymoAi"
+                text="Refactor The Selection using AymoAi"
+                icon="/icons/refact_selected.png"
         >
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
 
