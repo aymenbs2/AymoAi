@@ -58,7 +58,7 @@ class MainAiServices(private val apiKey: String) {
         })
     }
 
-    fun refactCode(codeContent: String, callback: (Result<String>) -> Unit) {
+    fun refactCode(rq:String,codeContent: String, callback: (Result<String>) -> Unit) {
         val requestBodyMap = mapOf(
             "model" to System.getenv("MODEL"),
             "messages" to listOf(
@@ -68,7 +68,7 @@ class MainAiServices(private val apiKey: String) {
                 ),
                 mapOf(
                     "role" to USER_ROLE,
-                    "content" to "${System.getenv("REFACTOR_CODE_RQ")}\n $codeContent"
+                    "content" to "${rq}\n $codeContent"
                 )
             )
         )
