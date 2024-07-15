@@ -7,6 +7,8 @@ import com.aymendev.aymoai.util.Constants.ERROR_GENERATING_UNIT_TEST
 import com.aymendev.aymoai.util.Constants.SUCCESS_UNIT_TEST_GENERATED
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ReadAction
+import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.vfs.VirtualFile
@@ -90,16 +92,25 @@ class AymoAiViewModel(  apiKey: String) {
         }
     }
 
-    fun refactTheCode(file: VirtualFile, onCompletion: (Boolean, ProgramingLanguageFile?, String) -> Unit) {
+     fun replaceSelection(editor: Editor, newText: String) {
+        WriteCommandAction.runWriteCommandAction(editor.project) {
+            val document = editor.document
+            val selectionModel = editor.selectionModel
+            val start = selectionModel.selectionStart
+            val end = selectionModel.selectionEnd
+            document.replaceString(start, end, newText)
+        }
+    }
+
+    fun refactTheCode(req:String,file: String?, onCompletion: (Boolean, ProgramingLanguageFile?, String) -> Unit) {
         val psiFileContent = ReadAction.compute<String, Throwable> {
-            FileDocumentManager.getInstance().getDocument(file)?.text
+           file
         } ?: return
 
-        mainAiServices.refactCode(psiFileContent) { result ->
+        mainAiServices.refactCode(req,psiFileContent) { result ->
             ApplicationManager.getApplication().invokeLater {
                 result.fold(
                     onSuccess = { content ->
-                        println("$content")
                         val tab = content.split("///")
                         val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}","").replace("```",""))
                         println("$programingLanguageFile")

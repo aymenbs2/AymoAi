@@ -33,6 +33,7 @@ jobs:
           echo "REFACTOR_CODE_RQ=${{ secrets.REFACTOR_CODE_RQ }}" >> $GITHUB_ENV
           echo "MODEL=${{ secrets.MODEL }}" >> $GITHUB_ENV
           echo "GENERATE_UNIT_TEST_RQ=${{ secrets.GENERATE_UNIT_TEST_RQ }}" >> $GITHUB_ENV
+          echo "REFACTOR_SELECTED_CODE_RQ=${{ secrets.REFACTOR_SELECTED_CODE_RQ }}" >> $GITHUB_ENV
 
       - name: Download certificate chain file
         run: echo "${{ secrets.AYMOAI_CHAIN }}" > $GITHUB_WORKSPACE/certificate_chain.pem

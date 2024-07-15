@@ -54,6 +54,12 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
+        <action id="com.aymendev.aymoai.actions.RefactorSelectionAction"
+                class="com.aymendev.aymoai.actions.RefactorSelectionAction" text="Refactor Selection With AymoAi">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+
+        </action>
+
     </actions>
 
 </idea-plugin>
