@@ -23,11 +23,7 @@ class RefactCodeAction : AnAction() {
     private var apiKey = System.getenv("AYMOAPI_KEY") ?: System.getProperty("AYMOAPI_KEY")
     private val viewModel = AymoAiViewModel(apiKey)
 
-    override fun update(event: AnActionEvent) {
-        val editor = event.getData(CommonDataKeys.EDITOR)
-        val selectedText = editor?.selectionModel?.selectedText
-        event.presentation.isEnabledAndVisible = !selectedText.isNullOrEmpty()
-    }
+
 
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return

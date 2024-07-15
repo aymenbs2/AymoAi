@@ -41,21 +41,25 @@
 
         <action id="com.aymendev.aymoai.actions.CreateUnitTestAction"
                 class="com.aymendev.aymoai.actions.CreateUnitTestAction" text="Generate Unit Test With AymoAi"
-                description="Generate Unit Test With AymoAi">
+                description="Generate Unit Test using AymoAi"
+                icon="/icons/unit_test.png">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
 
         </action>
-        <action id="com.aymendev.aymoai.actions.RefactCodeAction" class="com.aymendev.aymoai.actions.RefactCodeAction"
+        <action id="com.aymendev.aymoai.actions.RefactCodeAction"
+                class="com.aymendev.aymoai.actions.RefactCodeAction"
                 text="Refact The Code AymoAi"
                 description="Refactor The Code using AymoAi"
+                icon="/icons/refactor_code.png"
         >
-
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <action id="com.aymendev.aymoai.actions.RefactorSelectionAction"
-                class="com.aymendev.aymoai.actions.RefactorSelectionAction" text="Refactor Selection With AymoAi">
+                class="com.aymendev.aymoai.actions.RefactorSelectionAction"
+                text="Refactor Selection using AymoAi"
+        >
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
 
         </action>
