@@ -66,12 +66,20 @@ tasks {
     publishPlugin {
         token.set(System.getenv("AYMOAI_TOCKEN"))
     }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 
 }
 
 sourceSets {
+    main {
+        resources {
+            srcDirs("src/main/resources")
+        }
+    }
     test {
-        java.srcDir("src/test")
+        java.srcDir("src/test/kotlin")
     }
 }
 
