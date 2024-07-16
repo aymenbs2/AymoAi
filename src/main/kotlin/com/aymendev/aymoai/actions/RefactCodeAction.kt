@@ -18,24 +18,30 @@ import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
+import com.aymendev.aymoai.config.Config
+import com.intellij.openapi.application.ReadAction
+
 
 class RefactCodeAction : AnAction() {
-    private var apiKey = System.getenv("AYMOAPI_KEY") ?: System.getProperty("AYMOAPI_KEY")
+    private var apiKey = Config.aymoApiKey
     private val viewModel = AymoAiViewModel(apiKey)
-
 
 
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
         val file = event.getData(com.intellij.openapi.actionSystem.CommonDataKeys.VIRTUAL_FILE)
 
-
+        val fileContent = ReadAction.compute<String?, Throwable> {
+            file.let {
+                if (it != null) {
+                    FileDocumentManager.getInstance().getDocument(it)?.text
+                } else ""
+            }
+        }
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, GENERATING_UNIT_TEST) {
             override fun run(indicator: com.intellij.openapi.progress.ProgressIndicator) {
                 indicator.text = RAFACTORING
-                viewModel.refactTheCode(System.getenv("REFACTOR_CODE_RQ"),file?.let {
-                    FileDocumentManager.getInstance().getDocument(it)?.text
-                }) { success, result, message ->
+                viewModel.refactTheCode(Config.refactorCodeRq, fileContent) { success, result, message ->
                     ApplicationManager.getApplication().invokeLater {
                         if (success) {
                             if (result != null && file != null) {

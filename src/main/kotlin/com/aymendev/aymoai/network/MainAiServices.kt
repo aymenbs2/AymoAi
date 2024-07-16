@@ -11,6 +11,8 @@ import com.google.gson.JsonParser
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import com.aymendev.aymoai.config.Config
+
 
 class MainAiServices(private val apiKey: String) {
     private val client = OkHttpClient()
@@ -18,22 +20,22 @@ class MainAiServices(private val apiKey: String) {
 
     fun generateUnitTest(codeContent: String, callback: (Result<String>) -> Unit) {
         val requestBodyMap = mapOf(
-            "model" to System.getenv("MODEL"),
+            "model" to Config.model,
             "messages" to listOf(
                 mapOf(
                     "role" to SYSTEM_ROLE,
-                    "content" to System.getenv("HELPFUL_ASSISTANT")
+                    "content" to Config.helpfulAssistant
                 ),
                 mapOf(
                     "role" to USER_ROLE,
-                    "content" to "${System.getenv("GENERATE_UNIT_TEST_RQ")}\n $codeContent"
+                    "content" to "${Config.generateUnitTestRq}\n $codeContent"
                 )
             )
         )
 
         val requestBodyJson = gson.toJson(requestBodyMap)
         val request = Request.Builder()
-            .url(System.getenv("BASE_URL"))
+            .url(Config.baseUrl)
             .post(requestBodyJson.toRequestBody("application/json".toMediaTypeOrNull()))
             .addHeader("Content-Type", CONTENT_TYPE)
             .addHeader("Authorization", "Bearer $apiKey")
@@ -60,11 +62,11 @@ class MainAiServices(private val apiKey: String) {
 
     fun refactCode(rq:String,codeContent: String, callback: (Result<String>) -> Unit) {
         val requestBodyMap = mapOf(
-            "model" to System.getenv("MODEL"),
+            "model" to Config.model,
             "messages" to listOf(
                 mapOf(
                     "role" to SYSTEM_ROLE,
-                    "content" to System.getenv("HELPFUL_ASSISTANT")
+                    "content" to Config.helpfulAssistant
                 ),
                 mapOf(
                     "role" to USER_ROLE,
@@ -75,7 +77,7 @@ class MainAiServices(private val apiKey: String) {
 
         val requestBodyJson = gson.toJson(requestBodyMap)
         val request = Request.Builder()
-            .url(System.getenv("BASE_URL"))
+            .url(Config.baseUrl)
             .post(requestBodyJson.toRequestBody("application/json".toMediaTypeOrNull()))
             .addHeader("Content-Type", CONTENT_TYPE)
             .addHeader("Authorization", "Bearer $apiKey")
@@ -88,6 +90,7 @@ class MainAiServices(private val apiKey: String) {
 
             override fun onResponse(call: Call, response: Response) {
                 response.body?.string()?.let {
+
                     val jsonResponse = JsonParser.parseString(it).asJsonObject
                     val choices = jsonResponse.getAsJsonArray("choices")
                     val unitTestContent = choices[0].asJsonObject

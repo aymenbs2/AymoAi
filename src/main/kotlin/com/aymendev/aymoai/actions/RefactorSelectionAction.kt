@@ -16,9 +16,11 @@ import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.aymendev.aymoai.config.Config
+
 
 class RefactorSelectionAction : AnAction() {
-    private var apiKey = System.getenv("AYMOAPI_KEY") ?: System.getProperty("AYMOAPI_KEY")
+    private var apiKey = Config.aymoApiKey
     private val viewModel = AymoAiViewModel(apiKey)
 
     override fun update(event: AnActionEvent) {
@@ -26,6 +28,7 @@ class RefactorSelectionAction : AnAction() {
         val selectedText = editor?.selectionModel?.selectedText
         event.presentation.isEnabledAndVisible = !selectedText.isNullOrEmpty()
     }
+
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return
@@ -44,7 +47,10 @@ class RefactorSelectionAction : AnAction() {
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, GENERATING_UNIT_TEST) {
             override fun run(indicator: com.intellij.openapi.progress.ProgressIndicator) {
                 indicator.text = RAFACTORING
-                viewModel.refactTheCode(System.getenv("REFACTOR_SELECTED_CODE_RQ"),selectedText) { success, result, message ->
+                viewModel.refactTheCode(
+                    Config.refactorSelectedCodeRq,
+                    selectedText
+                ) { success, result, message ->
                     ApplicationManager.getApplication().invokeLater {
                         if (success) {
                             if (result != null) {

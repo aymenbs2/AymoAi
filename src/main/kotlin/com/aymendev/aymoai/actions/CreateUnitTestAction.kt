@@ -1,5 +1,6 @@
 package com.aymendev.aymoai.actions
 
+import com.aymendev.aymoai.config.Config
 import com.aymendev.aymoai.util.Constants.ERROR_NO_FILE_SELECTED
 import com.aymendev.aymoai.util.Constants.ERROR_TITLE
 import com.aymendev.aymoai.util.Constants.GENERATING_UNIT_TEST
@@ -13,7 +14,7 @@ import com.intellij.openapi.progress.Task
 
 
 class CreateUnitTestAction : AnAction() {
-    private var apiKey = System.getenv("AYMOAPI_KEY")?:System.getProperty("AYMOAPI_KEY")
+    private var apiKey = Config.aymoApiKey
     private val viewModel = AymoAiViewModel(apiKey)
 
     override fun actionPerformed(event: AnActionEvent) {

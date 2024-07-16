@@ -34,8 +34,7 @@ class AymoAiViewModel(  apiKey: String) {
                 result.fold(
                     onSuccess = { unitTestContent ->
                         val tab = unitTestContent.split("///")
-                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]}///","").replace("```${tab[1]}","").replace("```",""))
-                        println("$programingLanguageFile")
+                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}",""))
                         onCompletion(true, programingLanguageFile, SUCCESS_UNIT_TEST_GENERATED)
 
                     },
@@ -111,9 +110,9 @@ class AymoAiViewModel(  apiKey: String) {
             ApplicationManager.getApplication().invokeLater {
                 result.fold(
                     onSuccess = { content ->
+
                         val tab = content.split("///")
-                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}","").replace("```",""))
-                        println("$programingLanguageFile")
+                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}",""))
                         onCompletion(true, programingLanguageFile, SUCCESS_UNIT_TEST_GENERATED)
                     },
                     onFailure = { error ->
