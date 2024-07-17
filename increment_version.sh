@@ -2,7 +2,7 @@
 # increment_version.sh
 
 # Get the latest tag from git
-latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.1.1")
+latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.2.1")
 
 # Extract the major, minor, and patch numbers
 IFS='.' read -r -a version_parts <<< "$latest_tag"

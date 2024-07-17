@@ -68,7 +68,7 @@ jobs:
           git commit -m "Bump version to $NEW_VERSION"
           git tag $NEW_VERSION
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git --tags
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git HEAD:main
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git 
 
       - name: Build with Gradle
         run: ./gradlew build
