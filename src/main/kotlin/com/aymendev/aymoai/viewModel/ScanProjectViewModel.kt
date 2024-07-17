@@ -7,92 +7,88 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.google.gson.Gson
 
 class ScanProjectViewModel {
-    fun convertToHtml(report: Map<String, String>): String {
+
+    fun convertToHtml(report: Map<String, String>, date: String): String {
         return report.entries.mapIndexed { index, entry ->
             val pageNumber = index + 1
             val (chunk, reportContent) = entry
             """
-        <div class="page">
-            <div class="page-header">Page $pageNumber</div>
-            <div class="info-code">
-                <pre>
-                    <code>
-                        ${chunk.replace("\n", "<br/>")}
-                    </code>
-                </pre>
+        <div class="container">
+            <div class="header">
+                <div class="page-number">Page $pageNumber</div>
             </div>
-            <div class="info-paragraph">
-                <h2>Report</h2>
-                ${reportContent.replace("\n", "<br/>")}
-            </div>
+            <h1>Report</h1>
+            <p>${reportContent.replace("\n", "<br/>")}</p>
+            <pre><code>${chunk.replace("\n", "<br/>")}</code></pre>
         </div>
         """
         }.joinToString(
             separator = "",
             prefix = """
-            <html>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>AymoAi Report</title>
             <style>
-                html, body {
-                    font-family: Verdana, sans-serif;
-                    background-color: #37878D;
-                    font-size: 12px;
-                    line-height: 1.5;
-                }
-                .info-paragraph {
-                    background-color: #37878D;
-                    border-radius: 15px;
-                    border-left: 5px solid #F89494;
-                    padding: 5px;
+                body {
                     font-family: Arial, sans-serif;
-                    font-size: 1.1em;
-                    line-height: 1.6;
-                    color: white;
+                    background-color: #f4f4f9;
+                    margin: 0;
+                    padding: 20px;
                 }
-                .info-paragraph h2 {
-                    font-size: 1.5em;
-                    color: #FF8949;
-                    margin-top: 0;
+                .header {
+                    background-color: #333;
+                    color: #fff;
+                    padding: 10px 20px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .header .page-number {
+                    font-size: 14px;
+                }
+                .header .date {
+                    font-size: 14px;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 20px auto;
+                    background-color: #fff;
+                    padding: 20px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    border-radius: 8px;
                 }
                 h1 {
-                    text-align: left;
+                    color: #333;
                 }
                 p {
-                    text-indent: 50px;
-                    text-align: justify;
-                    letter-spacing: 3px;
-                    border-radius: 15px;
-                }
-                code {
-                    font-family: monospace;
-                    color: white;
-                    border-radius: 15px;
+                    line-height: 1.6;
+                    color: #666;
                 }
                 pre {
-                    background-color: #2A7A81;
-                    border: thick double #32a1ce;
-                    border-radius: 15px;
-                    font-size: 0.8em;
-                    margin: 15px;
+                    background-color: #282c34;
+                    color: #abb2bf;
+                    padding: 10px;
+                    border-radius: 5px;
+                    overflow-x: auto;
                 }
-                .page-header {
-                    position: fixed;
-                    top: 0;
-                    width: 100%;
-                    text-align: right;
-                    background-color: #F89494;
-                    color: white;
-                    padding: 5px 10px;
-                    font-size: 0.8em;
-                }
-                .page {
-                    page-break-after: always;
+                code {
+                    font-family: "Courier New", Courier, monospace;
                 }
             </style>
-            <body>
+        </head>
+        <body>
         """.trimIndent(),
-            postfix = "</body></html>"
+            postfix = """
+               $date
+         </body>
+        </html>
+        """.trimIndent()
         )
     }
+
 
     fun scanFolder(folder: VirtualFile, indicator: ProgressIndicator): MutableList<Pair<String, String>> {
         val gson = Gson()
@@ -106,18 +102,18 @@ class ScanProjectViewModel {
         requests.forEachIndexed { index, requestBodyMap ->
             val requestBodyJson = gson.toJson(requestBodyMap)
             val request = RequestHelper.buildRequest(requestBodyJson)
-            RequestHelper.processRequestSynchronously(client, request, results, requests.size, index, indicator, chunks[index])
+            RequestHelper.processRequestSynchronously(
+                client,
+                request,
+                results,
+                requests.size,
+                index,
+                indicator,
+                chunks[index]
+            )
         }
         return results
     }
 
-     fun formatReport(results: List<Pair<String, String>>): String {
-        val stringBuilder = StringBuilder()
-        results.forEach { (chunk, report) ->
-            stringBuilder.append("Code:\n$chunk\n\n")
-            stringBuilder.append("Report:\n$report\n")
-            stringBuilder.append("---------------------------------------------------\n")
-        }
-        return stringBuilder.toString()
-    }
+
 }

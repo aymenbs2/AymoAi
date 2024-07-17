@@ -13,11 +13,11 @@ import javax.swing.*
 
 object DialogUtils {
 
-    fun showSecurityReportDialog(project: Project,okText:String="Export PDF", report: String,onOkClicked:()->Unit) {
+    fun showSecurityReportDialog(project: Project,okText:String="Export PDF",title:String="AymoAi Security Issue Report", report: String,onOkClicked:()->Unit) {
         val dialog = object : DialogWrapper(project) {
             init {
                 init()
-                title = "AymoAi Security Issue Report"
+                this.title = title
             }
 
             override fun createCenterPanel(): JComponent {
@@ -39,7 +39,6 @@ object DialogUtils {
 
     private fun createReportPanel(report: String): JPanel {
         val panel = JPanel(BorderLayout())
-
         val titleLabel = JLabel("AymoAi Security Issue Report").apply {
             font = Font(font.name, Font.BOLD, 18)
             icon = AllIcons.General.Warning
@@ -49,11 +48,14 @@ object DialogUtils {
         panel.add(titleLabel, BorderLayout.NORTH)
         val editorPane = JEditorPane("text/html", report).apply {
             isEditable = false
-            background = JBColor.WHITE
         }
 
         val scrollPane = JBScrollPane(editorPane).apply {
             preferredSize = Dimension(800, 600)
+        }
+        // Scroll to the top when the panel is first created
+        SwingUtilities.invokeLater {
+            scrollPane.verticalScrollBar.value = 0
         }
 
         val contentPanel = JPanel(VerticalLayout(10)).apply {

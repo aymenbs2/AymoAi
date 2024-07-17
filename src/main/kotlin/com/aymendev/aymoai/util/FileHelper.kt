@@ -29,10 +29,17 @@ object FileHelper {
         ".springBeans",
         ".sts4-cache"
     )
-     fun exportReportToHtmlFile(htmlContent: String, project: Project) {
+
+    fun exportReportToHtmlFile(
+        htmlContent: String,
+        fileName: String = "aymoai_security_report.html",
+        project: Project
+    ) {
         val fileChooser = JFileChooser()
+        val desktopPath = System.getProperty("user.home") + File.separator + "Desktop"
+        fileChooser.currentDirectory = File(desktopPath)
         fileChooser.dialogTitle = "Save HTML Report"
-        fileChooser.selectedFile = File("security_report.html")
+        fileChooser.selectedFile = File(fileName)
         val userSelection = fileChooser.showSaveDialog(null)
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             val fileToSave = fileChooser.selectedFile
@@ -56,6 +63,7 @@ object FileHelper {
             }
         }
     }
+
     fun readGitignorePatterns(folder: VirtualFile): List<String> {
         val gitignoreFile = File(folder.path, ".gitignore")
         return if (gitignoreFile.exists()) {

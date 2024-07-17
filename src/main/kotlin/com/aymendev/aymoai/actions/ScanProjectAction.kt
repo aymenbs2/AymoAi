@@ -1,7 +1,6 @@
 package com.aymendev.aymoai.actions
 
 import com.aymendev.aymoai.config.Config
-import com.aymendev.aymoai.util.ClipboardUtils
 import com.aymendev.aymoai.util.DialogUtils
 import com.aymendev.aymoai.util.FileHelper
 import com.aymendev.aymoai.viewModel.ScanProjectViewModel
@@ -11,6 +10,8 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.actionSystem.CommonDataKeys
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ScanProjectAction : AnAction() {
     private val apiKey = Config.aymoApiKey
@@ -20,7 +21,7 @@ class ScanProjectAction : AnAction() {
         val project = event.project ?: return
         if (apiKey.isBlank()) {
             Messages.showMessageDialog(
-                "OpenAI API Key not found in environment variables",
+                "API Key not found ",
                 "Error",
                 Messages.getErrorIcon()
             )
@@ -41,13 +42,16 @@ class ScanProjectAction : AnAction() {
             indicator.text = "Scanning Folder..."
             val report = viewModel.scanFolder(selectedFolder, indicator)
             ApplicationManager.getApplication().invokeLater {
-                val reportHtml = viewModel.convertToHtml(report.toMap())
+                val formatter = DateTimeFormatter.ofPattern("yyyy MMM dd HH:mm:ss")
+                val date= LocalDateTime.now().format(formatter)
+                val reportHtml = viewModel.convertToHtml(report.toMap(),date=date)
                 DialogUtils.showSecurityReportDialog(
+                    title = "AymoAi Security Issue Report $date",
                     okText = "Export HTML",
                     project = project,
                     report = reportHtml
                 ) {
-                    FileHelper.exportReportToHtmlFile(htmlContent = reportHtml, project = project)
+                    FileHelper.exportReportToHtmlFile(htmlContent = reportHtml, fileName = "AymoAi_security_report_${date.replace(" ","_").replace(":","_")}.html", project = project)
                 }
             }
         }, title, canBeCancelled, project)
