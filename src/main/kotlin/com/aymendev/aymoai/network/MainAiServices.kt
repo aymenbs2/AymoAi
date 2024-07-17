@@ -12,13 +12,24 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import com.aymendev.aymoai.config.Config
+import com.aymendev.aymoai.util.RequestHelper
+import java.util.concurrent.TimeUnit
 
 
 class MainAiServices(private val apiKey: String) {
-    private val client = OkHttpClient()
+    private var client = OkHttpClient.Builder()
+        .connectTimeout(5000L, TimeUnit.SECONDS) // Set the connection timeout
+        .writeTimeout(5000L, TimeUnit.SECONDS)   // Set the write timeout
+        .readTimeout(10000L, TimeUnit.SECONDS)    // Set the read timeout
+        .build()
+
+
+
+
     private val gson = Gson()
 
     fun generateUnitTest(codeContent: String, callback: (Result<String>) -> Unit) {
+        client=  RequestHelper.createHttpClientBasedOnFileSize(codeContent.length.toLong())
         val requestBodyMap = mapOf(
             "model" to Config.model,
             "messages" to listOf(
@@ -47,6 +58,7 @@ class MainAiServices(private val apiKey: String) {
             }
 
             override fun onResponse(call: Call, response: Response) {
+
                 response.body?.string()?.let {
                     val jsonResponse = JsonParser.parseString(it).asJsonObject
                     val choices = jsonResponse.getAsJsonArray("choices")
@@ -61,6 +73,8 @@ class MainAiServices(private val apiKey: String) {
     }
 
     fun refactCode(rq:String,codeContent: String, callback: (Result<String>) -> Unit) {
+        client=  RequestHelper.createHttpClientBasedOnFileSize(codeContent.length.toLong())
+
         val requestBodyMap = mapOf(
             "model" to Config.model,
             "messages" to listOf(
@@ -85,6 +99,8 @@ class MainAiServices(private val apiKey: String) {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                println("err:${e.message}")
+
                 callback(Result.failure(IOException("Server Error")))
             }
 

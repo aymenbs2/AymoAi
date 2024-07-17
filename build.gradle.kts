@@ -17,10 +17,11 @@ repositories {
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("com.google.code.gson:gson:2.8.9") // Add Gson dependency
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    implementation("org.apache.xmlgraphics:xmlgraphics-commons:2.6")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    testImplementation ("org.mockito:mockito-core:4.0.0")
-    testImplementation ("org.jetbrains.kotlin:kotlin-test:1.7.20")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.20")
 
 
 }
@@ -53,15 +54,6 @@ tasks {
         certificateChain.set(System.getenv("AYMOAI_CHAIN"))
         privateKey.set(System.getenv("AYMOAI_CERTIF"))
         password.set(System.getenv("AYMOAI_PASS"))
-    }
-// Ensure AYMOAPI_KEY is set as a system property for the build process
-    gradle.taskGraph.whenReady {
-        tasks.map { task ->
-            task.doFirst {
-                val aymoapiKey = System.getenv("AYMOAPI_KEY") ?: ""
-                System.setProperty("AYMOAPI_KEY", aymoapiKey)
-            }
-        }
     }
     publishPlugin {
         token.set(System.getenv("AYMOAI_TOCKEN"))

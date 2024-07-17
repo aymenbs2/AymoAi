@@ -31,6 +31,11 @@ object Config {
 
     val model: String
         get() = properties.getProperty("MODEL")
+    val scanRole: String
+        get() = properties.getProperty("SCAN_ROLE")
+
+    val scanRequest: String
+        get() = properties.getProperty("SCAN_RQ")
 
     val generateUnitTestRq: String
         get() = properties.getProperty("GENERATE_UNIT_TEST_RQ")

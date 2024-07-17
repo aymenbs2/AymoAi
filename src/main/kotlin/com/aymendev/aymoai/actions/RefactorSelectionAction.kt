@@ -34,7 +34,7 @@ class RefactorSelectionAction : AnAction() {
         val editor = event.getData(CommonDataKeys.EDITOR) ?: return
         val selectedText = editor.selectionModel.selectedText ?: return
 
-        if (apiKey.isNullOrBlank()) {
+        if (apiKey.isBlank()) {
             Messages.showMessageDialog(
                 "API Key not found in environment variables",
                 "Error",

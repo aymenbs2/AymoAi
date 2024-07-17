@@ -64,7 +64,8 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
 
         </action>
-        <action id="ScanProjectAction" class="com.aymendev.aymoai.actions.ScanProjectAction" text="Scan Folder for Security Issues" icon="/icons/scan_icon.png">
+        <action id="ScanProjectAction" class="com.aymendev.aymoai.actions.ScanProjectAction"
+                text="Get Security Issues Report using AymoAi" icon="/icons/scan_icon.png">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
     </actions>

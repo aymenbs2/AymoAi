@@ -112,7 +112,7 @@ class AymoAiViewModel(  apiKey: String) {
                     onSuccess = { content ->
 
                         val tab = content.split("///")
-                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}",""))
+                        val programingLanguageFile = ProgramingLanguageFile(tab[1], tab[2], tab[3].replace("///${tab[1]}///${tab[2]};","").replace("```${tab[1]}","").replace("```",""))
                         onCompletion(true, programingLanguageFile, SUCCESS_UNIT_TEST_GENERATED)
                     },
                     onFailure = { error ->
