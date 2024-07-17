@@ -1,7 +1,6 @@
 package com.aymendev.aymoai.actions
 
 import com.aymendev.aymoai.data.model.ProgramingLanguageFile
-import com.aymendev.aymoai.util.Constants.ERROR_NO_FILE_SELECTED
 import com.aymendev.aymoai.util.Constants.ERROR_TITLE
 import com.aymendev.aymoai.util.Constants.GENERATING_UNIT_TEST
 import com.aymendev.aymoai.util.Constants.RAFACTORING
@@ -9,7 +8,6 @@ import com.aymendev.aymoai.util.Constants.SUCCESS_TITLE
 import com.aymendev.aymoai.viewModel.AymoAiViewModel
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.FileDocumentManager
