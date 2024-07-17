@@ -43,3 +43,7 @@ bin/
 
 src/main/resources/config.properties
 src/main/resources/META-INF/config.properties
+
+certificate_chain.pem
+config.properties
+private_key.pem
