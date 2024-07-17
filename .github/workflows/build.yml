@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Set up Kotlin
@@ -35,6 +35,8 @@ jobs:
           echo "MODEL=${{ secrets.MODEL }}" >> config.properties
           echo "GENERATE_UNIT_TEST_RQ=${{ secrets.GENERATE_UNIT_TEST_RQ }}" >> config.properties
           echo "REFACTOR_SELECTED_CODE_RQ=${{ secrets.REFACTOR_SELECTED_CODE_RQ }}" >> config.properties
+          echo "SCAN_RQ=${{ secrets.SCAN_RQ }}" >> config.properties
+          echo "SCAN_ROLE=${{ secrets.SCAN_ROLE }}" >> config.properties
 
       - name: Download certificate chain file
         run: echo "${{ secrets.AYMOAI_CHAIN }}" > $GITHUB_WORKSPACE/certificate_chain.pem
