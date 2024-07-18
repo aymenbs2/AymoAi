@@ -20,8 +20,10 @@
     ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>Initial release.</li>
             <li>Support all programing language.</li>
+            <li>New feature security report generation.</li>
+            <li>New feature  refactor selection part of code.</li>
+              <li>Added icons</li>
             <li>Improved performance.</li>
 
         </ul>
