@@ -63,10 +63,19 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add build.gradle.kts
           git add increment_version.sh
-          git commit -m "Bump version to $NEW_VERSION"
+          git commit -m "Bump version to $NEW_VERSION" || echo "No changes to commit"
           git tag $NEW_VERSION
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git --tags
-          git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git HEAD:main
+
+      - name: Push changes if any
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to push"
+          else
+            git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git --tags
+            git push -f https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/aymenbs2/AymoAi.git HEAD:main
+          fi
 
       - name: Build with Gradle
         run: ./gradlew build
